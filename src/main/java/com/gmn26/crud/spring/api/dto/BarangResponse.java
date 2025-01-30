@@ -1,26 +1,20 @@
-package com.gmn26.crud.spring.api.entity;
+package com.gmn26.crud.spring.api.dto;
 
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity
-@Getter
-@Setter
+@Builder
 @Data
-@Table(name = "barang")
-public class Barang {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@AllArgsConstructor
+@NoArgsConstructor
+public class BarangResponse {
     private Long id;
-
-    @Column(unique = true)
     private String kodeBarang;
-
     private String namaBarang;
     private Integer jumlahStok;
     private BigDecimal hargaSatuan;

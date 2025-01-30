@@ -1,24 +1,38 @@
 package com.gmn26.crud.spring.api.controller;
 
-import com.gmn26.crud.spring.api.entity.Barang;
+import com.gmn26.crud.spring.api.dto.BarangResponse;
+import com.gmn26.crud.spring.api.dto.CreateBarangDto;
+import com.gmn26.crud.spring.api.dto.WebResponse;
 import com.gmn26.crud.spring.api.service.BarangService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/barangs")
 public class BarangController {
-    private final BarangService barangService;
+    @Autowired
+    private BarangService barangService;
 
-    public BarangController(BarangService barangService) {
-        this.barangService = barangService;
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public WebResponse<List<BarangResponse>> getAllBarangs() {
+        List<BarangResponse> barangResponseList = barangService.listAll();
+        return WebResponse.<List<BarangResponse>>builder()
+                .success(true)
+                .message("Success fetching barang")
+                .data(barangResponseList)
+                .build();
     }
 
-    @GetMapping
-    public List<Barang> getBarangs() {
-        return barangService.getAll();
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public WebResponse<BarangResponse> createBarang(@RequestBody CreateBarangDto barangRequest) {
+        BarangResponse barangResponse = barangService.create(barangRequest);
+        return WebResponse.<BarangResponse>builder()
+                .success(true)
+                .message("Success creating barang")
+                .data(barangResponse)
+                .build();
     }
 }
