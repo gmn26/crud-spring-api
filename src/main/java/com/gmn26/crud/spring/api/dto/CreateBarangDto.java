@@ -15,9 +15,4 @@ public class CreateBarangDto {
     private String namaBarang;
     private Integer jumlahStok;
     private BigDecimal hargaSatuan;
-    private LocalDateTime tanggalMasuk;
-
-    public void setTanggalMasuk() {
-        this.tanggalMasuk = LocalDateTime.now();
-    }
 }
