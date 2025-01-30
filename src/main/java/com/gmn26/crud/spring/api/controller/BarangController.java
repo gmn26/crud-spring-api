@@ -35,4 +35,24 @@ public class BarangController {
                 .data(barangResponse)
                 .build();
     }
+
+    @PutMapping("/{id}")
+    public WebResponse<BarangResponse> updateBarang(@PathVariable Long id, @RequestBody CreateBarangDto barangRequest) {
+        BarangResponse barangResponse = barangService.update(id, barangRequest);
+        return WebResponse.<BarangResponse>builder()
+                .success(true)
+                .message("Barang updated")
+                .data(barangResponse)
+                .build();
+    }
+
+    @DeleteMapping("/{id}")
+    public WebResponse<BarangResponse> deleteBarang(@PathVariable Long id) {
+        barangService.delete(id);
+        return WebResponse.<BarangResponse>builder()
+                .success(true)
+                .message("Success delete barang")
+                .data(null)
+                .build();
+    }
 }
