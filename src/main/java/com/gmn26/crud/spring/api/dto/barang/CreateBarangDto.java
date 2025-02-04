@@ -1,11 +1,10 @@
-package com.gmn26.crud.spring.api.dto;
+package com.gmn26.crud.spring.api.dto.barang;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmn26.crud.spring.api.dto.barang.BarangResponse;
 import com.gmn26.crud.spring.api.dto.barang.CreateBarangDto;
 import com.gmn26.crud.spring.api.dto.WebResponse;
-import com.gmn26.crud.spring.api.entity.Barang;
+import com.gmn26.crud.spring.api.entity.BarangEntity;
 import com.gmn26.crud.spring.api.repository.BarangRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class BarangControllerTest {
+class BarangEntityControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -42,8 +42,8 @@ class BarangControllerTest {
     @Test
     void createBarangSuccess() throws Exception {
         CreateBarangDto createBarangDto = new CreateBarangDto();
-        createBarangDto.setKodeBarang("Kode Barang");
-        createBarangDto.setNamaBarang("Nama Barang");
+        createBarangDto.setKodeBarang("Kode BarangEntity");
+        createBarangDto.setNamaBarang("Nama BarangEntity");
         createBarangDto.setJumlahStok(10);
         createBarangDto.setHargaSatuan(BigDecimal.valueOf(1000.0));
 
@@ -60,8 +60,8 @@ class BarangControllerTest {
                     });
             assertNull(response.getError());
             assertTrue(response.isSuccess());
-            assertEquals("Kode Barang", response.getData().getKodeBarang());
-            assertEquals("Nama Barang", response.getData().getNamaBarang());
+            assertEquals("Kode BarangEntity", response.getData().getKodeBarang());
+            assertEquals("Nama BarangEntity", response.getData().getNamaBarang());
             assertEquals(10, response.getData().getJumlahStok());
             assertEquals(BigDecimal.valueOf(1000.0), response.getData().getHargaSatuan());
             assertNotNull(response.getData().getTanggalMasuk());
@@ -72,23 +72,23 @@ class BarangControllerTest {
 
     @Test
     void updateBarangSuccess() throws Exception {
-        Barang barang = new Barang();
-        barang.setKodeBarang("Kode Barang");
-        barang.setNamaBarang("Nama Barang");
-        barang.setJumlahStok(100);
-        barang.setHargaSatuan(BigDecimal.valueOf(1000.0));
-        barang.setTanggalMasuk(LocalDateTime.now());
+        BarangEntity barangEntity = new BarangEntity();
+        barangEntity.setKodeBarang("Kode BarangEntity");
+        barangEntity.setNamaBarang("Nama BarangEntity");
+        barangEntity.setJumlahStok(100);
+        barangEntity.setHargaSatuan(BigDecimal.valueOf(1000.0));
+        barangEntity.setTanggalMasuk(LocalDateTime.now());
 
-        barangRepository.save(barang);
+        barangRepository.save(barangEntity);
 
         CreateBarangDto createBarangDto = new CreateBarangDto();
-        createBarangDto.setKodeBarang("Kode Barang Edit");
-        createBarangDto.setNamaBarang("Nama Barang Edit");
+        createBarangDto.setKodeBarang("Kode BarangEntity Edit");
+        createBarangDto.setNamaBarang("Nama BarangEntity Edit");
         createBarangDto.setJumlahStok(100);
         createBarangDto.setHargaSatuan(BigDecimal.valueOf(1000.0));
 
         mockMvc.perform(
-                put("/api/v1/barangs/" + barang.getId())
+                put("/api/v1/barangs/" + barangEntity.getId())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createBarangDto))
@@ -100,8 +100,8 @@ class BarangControllerTest {
                     });
             assertNull(response.getError());
             assertTrue(response.isSuccess());
-            assertEquals("Kode Barang Edit", response.getData().getKodeBarang());
-            assertEquals("Nama Barang Edit", response.getData().getNamaBarang());
+            assertEquals("Kode BarangEntity Edit", response.getData().getKodeBarang());
+            assertEquals("Nama BarangEntity Edit", response.getData().getNamaBarang());
             assertEquals(100, response.getData().getJumlahStok());
             assertEquals(BigDecimal.valueOf(1000.0), response.getData().getHargaSatuan());
             assertNotNull(response.getData().getTanggalMasuk());
