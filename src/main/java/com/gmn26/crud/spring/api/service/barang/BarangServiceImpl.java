@@ -1,10 +1,9 @@
 package com.gmn26.crud.spring.api.service;
 
-import com.gmn26.crud.spring.api.dto.BarangResponse;
-import com.gmn26.crud.spring.api.dto.CreateBarangDto;
+import com.gmn26.crud.spring.api.dto.barang.BarangResponse;
+import com.gmn26.crud.spring.api.dto.barang.CreateBarangDto;
 import com.gmn26.crud.spring.api.entity.Barang;
 import com.gmn26.crud.spring.api.repository.BarangRepository;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class BarangService {
-
-    @Autowired
-    private JPAQueryFactory queryFactory;
+public class BarangServiceImpl implements BarangService {
 
     @Autowired
     private BarangRepository barangRepository;
@@ -38,6 +34,12 @@ public class BarangService {
     }
 
     public BarangResponse create(CreateBarangDto request) {
+        Boolean checkDuplicate = barangRepository.existsBarangByKodeBarang(request.getKodeBarang());
+
+        if (checkDuplicate) {
+            return null;
+        }
+
         Barang barangEntity = new Barang();
         barangEntity.setKodeBarang(request.getKodeBarang());
         barangEntity.setNamaBarang(request.getNamaBarang());
@@ -51,14 +53,20 @@ public class BarangService {
     }
 
     public BarangResponse update(Long id, CreateBarangDto request) {
-        Barang barang = barangRepository.findById(id).orElseThrow(() -> new RuntimeException("Barang not found"));
-        barang.setKodeBarang(request.getKodeBarang());
-        barang.setNamaBarang(request.getNamaBarang());
-        barang.setJumlahStok(request.getJumlahStok());
-        barang.setHargaSatuan(request.getHargaSatuan());
-        barangRepository.save(barang);
+        Boolean checkExist = barangRepository.existsById(id);
 
-        return toBarangResponse(barang);
+        if(checkExist) {
+            Barang barang = new Barang();
+            barang.setKodeBarang(request.getKodeBarang());
+            barang.setNamaBarang(request.getNamaBarang());
+            barang.setJumlahStok(request.getJumlahStok());
+            barang.setHargaSatuan(request.getHargaSatuan());
+            barangRepository.save(barang);
+
+            return toBarangResponse(barang);
+        } else {
+            return null;
+        }
     }
 
     public BarangResponse delete(Long id) {

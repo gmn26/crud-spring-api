@@ -2,8 +2,8 @@ package com.gmn26.crud.spring.api.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gmn26.crud.spring.api.dto.BarangResponse;
-import com.gmn26.crud.spring.api.dto.CreateBarangDto;
+import com.gmn26.crud.spring.api.dto.barang.BarangResponse;
+import com.gmn26.crud.spring.api.dto.barang.CreateBarangDto;
 import com.gmn26.crud.spring.api.dto.WebResponse;
 import com.gmn26.crud.spring.api.entity.Barang;
 import com.gmn26.crud.spring.api.repository.BarangRepository;
@@ -16,10 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.MockMvcBuilder.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
