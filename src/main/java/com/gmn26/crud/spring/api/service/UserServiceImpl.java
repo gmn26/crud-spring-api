@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
         } catch (AuthenticationException e) {
             log.error("Authentication failed error: {}", e.getMessage());
-            throw e;
+            return null;
         }
     }
 }
