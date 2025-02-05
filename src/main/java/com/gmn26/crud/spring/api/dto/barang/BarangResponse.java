@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Builder
 @Data
@@ -19,4 +20,5 @@ public class BarangResponse {
     private Integer jumlahStok;
     private BigDecimal hargaSatuan;
     private LocalDateTime tanggalMasuk;
+    private UUID idUser;
 }

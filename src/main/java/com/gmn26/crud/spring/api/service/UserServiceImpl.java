@@ -24,7 +24,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public String login(LoginRequestDto loginRequestDto) {
         try {
-            log.info("Login request: {}", loginRequestDto);
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginRequestDto.getUsername(),
@@ -32,13 +31,8 @@ public class UserServiceImpl implements UserService {
                     )
             );
 
-            // Log the authentication object
-            log.info("Authentication result: {}", authentication);
-
-            // Set authentication context
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            // Generate JWT token
             return jwtTokenProvider.getJwtSecret(authentication);
 
         } catch (AuthenticationException e) {

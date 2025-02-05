@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class UserController {
+public class AuthController {
     @Autowired
     private UserRepository userRepository;
 

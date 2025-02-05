@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -25,4 +26,9 @@ public class BarangEntity {
     private Integer jumlahStok;
     private BigDecimal hargaSatuan;
     private LocalDateTime tanggalMasuk;
+    private UUID idUser;
+
+//    @ManyToOne
+//    @JoinColumn(name = "userId", nullable = false)
+//    private UserEntity users;
 }
