@@ -1,4 +1,4 @@
-package com.gmn26.crud.spring.api.dto.auth;
+package com.gmn26.crud.spring.api.bean.auth;
 
 import lombok.Data;
 

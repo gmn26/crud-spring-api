@@ -1,4 +1,4 @@
-package com.gmn26.crud.spring.api.dto;
+package com.gmn26.crud.spring.api.bean;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

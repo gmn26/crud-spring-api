@@ -1,12 +1,12 @@
-package com.gmn26.crud.spring.api.service.barang;
+package com.gmn26.crud.spring.api.service;
 
-import com.gmn26.crud.spring.api.dto.barang.BarangResponse;
-import com.gmn26.crud.spring.api.dto.barang.CreateBarangDto;
+import com.gmn26.crud.spring.api.bean.barang.BarangResponse;
+import com.gmn26.crud.spring.api.bean.barang.CreateBarangDto;
 import com.gmn26.crud.spring.api.entity.BarangEntity;
 import com.gmn26.crud.spring.api.entity.UserEntity;
 import com.gmn26.crud.spring.api.repository.BarangRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,10 +15,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class BarangServiceImpl implements BarangService {
+@RequiredArgsConstructor
+public class BarangService {
 
-    @Autowired
-    private BarangRepository barangRepository;
+    private final BarangRepository barangRepository;
+
+    private final ValidationService validationService;
 
     private BarangResponse toBarangResponse(BarangEntity barangEntity) {
         return BarangResponse.builder()
@@ -43,6 +45,8 @@ public class BarangServiceImpl implements BarangService {
     }
 
     public BarangResponse create(UserEntity user, CreateBarangDto request) {
+        validationService.validate(request);
+
         Boolean checkDuplicate = barangRepository.existsBarangByKodeBarang(request.getKodeBarang());
 
         if (checkDuplicate) {
@@ -65,6 +69,8 @@ public class BarangServiceImpl implements BarangService {
     }
 
     public BarangResponse update(Long id, UserEntity user ,CreateBarangDto request) {
+        validationService.validate(request);
+
         boolean checkExist = barangRepository.existsById(id);
 
         if(checkExist) {
@@ -97,10 +103,6 @@ public class BarangServiceImpl implements BarangService {
             barangRepository.deleteById(id);
             return toBarangResponse(barangEntity);
         }
-        return null;
-    }
-
-    public List<BarangEntity> findBarangByJumlahStok(Integer jumlahStok) {
         return null;
     }
 }

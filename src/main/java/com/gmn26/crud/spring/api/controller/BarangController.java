@@ -1,12 +1,11 @@
 package com.gmn26.crud.spring.api.controller;
 
-import com.gmn26.crud.spring.api.dto.barang.BarangResponse;
-import com.gmn26.crud.spring.api.dto.barang.CreateBarangDto;
-import com.gmn26.crud.spring.api.dto.WebResponse;
+import com.gmn26.crud.spring.api.bean.barang.BarangResponse;
+import com.gmn26.crud.spring.api.bean.barang.CreateBarangDto;
+import com.gmn26.crud.spring.api.bean.WebResponse;
 import com.gmn26.crud.spring.api.entity.UserEntity;
-import com.gmn26.crud.spring.api.service.barang.BarangServiceImpl;
+import com.gmn26.crud.spring.api.service.BarangService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,11 +21,11 @@ import java.util.List;
 @SecurityRequirement(name = "Bearer Authentication")
 public class BarangController {
     @Autowired
-    private BarangServiceImpl barangServiceImpl;
+    private BarangService barangService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public WebResponse<List<BarangResponse>> getAllBarangs() {
-        List<BarangResponse> barangResponseList = barangServiceImpl.listAll();
+        List<BarangResponse> barangResponseList = barangService.listAll();
 
         return WebResponse.<List<BarangResponse>>builder()
                 .success(true)
@@ -39,7 +38,7 @@ public class BarangController {
     public WebResponse<List<BarangResponse>> getOwnedBarangs() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = (UserEntity) auth.getPrincipal();
-        List<BarangResponse> barangResponse = barangServiceImpl.listAuthedBarang(user);
+        List<BarangResponse> barangResponse = barangService.listAuthedBarang(user);
 
         return WebResponse.<List<BarangResponse>>builder()
                 .success(true)
@@ -52,7 +51,7 @@ public class BarangController {
     public WebResponse<BarangResponse> createBarang(@RequestBody CreateBarangDto barangRequest) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = (UserEntity) auth.getPrincipal();
-        BarangResponse barangResponse = barangServiceImpl.create(user, barangRequest);
+        BarangResponse barangResponse = barangService.create(user, barangRequest);
 
         if (barangResponse != null) {
             return WebResponse.<BarangResponse>builder()
@@ -74,7 +73,7 @@ public class BarangController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = (UserEntity) auth.getPrincipal();
 
-        BarangResponse barangResponse = barangServiceImpl.update(id, user, barangRequest);
+        BarangResponse barangResponse = barangService.update(id, user, barangRequest);
 
         if (barangResponse != null) {
             WebResponse<BarangResponse> response = WebResponse.<BarangResponse>builder()
@@ -97,7 +96,7 @@ public class BarangController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<WebResponse<BarangResponse>> deleteBarang(@PathVariable Long id) {
-        BarangResponse barangResponse = barangServiceImpl.delete(id);
+        BarangResponse barangResponse = barangService.delete(id);
 
         if (barangResponse != null) {
             WebResponse<BarangResponse> response = WebResponse.<BarangResponse>builder()
