@@ -8,10 +8,9 @@ import com.gmn26.crud.spring.api.dto.auth.RegisterResponse;
 import com.gmn26.crud.spring.api.entity.UserEntity;
 import com.gmn26.crud.spring.api.repository.UserRepository;
 import com.gmn26.crud.spring.api.service.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,17 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
 public class AuthController {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserServiceImpl userService;
+    private final UserServiceImpl userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public ResponseEntity<WebResponse<LoginResponse>> login(@RequestBody LoginRequestDto loginRequestDto) {
@@ -40,7 +35,7 @@ public class AuthController {
         if(loginResponse.getToken() != null) {
             WebResponse<LoginResponse> response = WebResponse.<LoginResponse>builder()
                     .success(true)
-                    .message("Logged in succesfully")
+                    .message("Login successful")
                     .data(loginResponse)
                     .build();
 

@@ -19,13 +19,13 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(generator = "UUID")
     UUID id;
 
-    String name;
+    private String name;
 
-    String username;
+    private String username;
 
-    String password;
+    private String password;
 
-    String roles;
+    private String roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
