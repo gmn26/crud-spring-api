@@ -24,17 +24,11 @@ public class JwtTokenProvider {
     public String getJwtSecret(Authentication authentication) {
         String username = authentication.getName();
 
-//        CustomUserDetailService userDetailService = (CustomUserDetailService) authentication.getPrincipal();
-//        UUID userId = userDetailService.getId();
-
-//        log.error("ID User : {}", userId);
-
         Date currentDate = new Date();
         Date expirationDate = new Date(currentDate.getTime() + jwtExpirationTime * 1000);
 
         return Jwts.builder()
                 .subject(username)
-//                .claim("userId", userId)
                 .issuedAt(new Date())
                 .expiration(expirationDate)
                 .signWith(key(), SignatureAlgorithm.HS256)

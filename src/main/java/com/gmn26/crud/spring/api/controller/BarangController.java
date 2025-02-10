@@ -1,13 +1,12 @@
 package com.gmn26.crud.spring.api.controller;
 
-import com.gmn26.crud.spring.api.dto.barang.BarangResponse;
-import com.gmn26.crud.spring.api.dto.barang.CreateBarangDto;
-import com.gmn26.crud.spring.api.dto.WebResponse;
+import com.gmn26.crud.spring.api.bean.WebResponse;
+import com.gmn26.crud.spring.api.bean.barang.BarangResponse;
+import com.gmn26.crud.spring.api.bean.barang.CreateBarangDto;
 import com.gmn26.crud.spring.api.entity.UserEntity;
-import com.gmn26.crud.spring.api.service.barang.BarangServiceImpl;
+import com.gmn26.crud.spring.api.service.BarangService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,26 +19,29 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/barangs")
 @SecurityRequirement(name = "Bearer Authentication")
+@RequiredArgsConstructor
 public class BarangController {
-    @Autowired
-    private BarangServiceImpl barangServiceImpl;
+
+    private final BarangService barangService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public WebResponse<List<BarangResponse>> getAllBarangs() {
-        List<BarangResponse> barangResponseList = barangServiceImpl.listAll();
+    public WebResponse<List<BarangResponse>> fetchAllBarang(
+            @RequestParam(required = false) String kodeBarang
+    ) {
+        List<BarangResponse> barangResponse = barangService.findAllBarang(kodeBarang);
 
         return WebResponse.<List<BarangResponse>>builder()
                 .success(true)
-                .message("Success fetching barang")
-                .data(barangResponseList)
+                .message("Success fething all barang")
+                .data(barangResponse)
                 .build();
     }
 
     @GetMapping(path = "/owned", produces = MediaType.APPLICATION_JSON_VALUE)
-    public WebResponse<List<BarangResponse>> getOwnedBarangs() {
+    public WebResponse<List<BarangResponse>> fetchAutedBarang() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = (UserEntity) auth.getPrincipal();
-        List<BarangResponse> barangResponse = barangServiceImpl.listAuthedBarang(user);
+        List<BarangResponse> barangResponse = barangService.fetchAuthedBarang(user);
 
         return WebResponse.<List<BarangResponse>>builder()
                 .success(true)
@@ -49,10 +51,10 @@ public class BarangController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public WebResponse<BarangResponse> createBarang(@RequestBody CreateBarangDto barangRequest) {
+    public WebResponse<BarangResponse> createBarang(@RequestBody CreateBarangDto request) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = (UserEntity) auth.getPrincipal();
-        BarangResponse barangResponse = barangServiceImpl.create(user, barangRequest);
+        BarangResponse barangResponse = barangService.create(user, request);
 
         if (barangResponse != null) {
             return WebResponse.<BarangResponse>builder()
@@ -70,11 +72,11 @@ public class BarangController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<WebResponse<BarangResponse>> updateBarang(@PathVariable Long id, @RequestBody CreateBarangDto barangRequest) {
+    public ResponseEntity<WebResponse<BarangResponse>> updateBarang(@PathVariable Long id, @RequestBody CreateBarangDto request) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = (UserEntity) auth.getPrincipal();
 
-        BarangResponse barangResponse = barangServiceImpl.update(id, user, barangRequest);
+        BarangResponse barangResponse = barangService.update(id, user, request);
 
         if (barangResponse != null) {
             WebResponse<BarangResponse> response = WebResponse.<BarangResponse>builder()
@@ -97,7 +99,7 @@ public class BarangController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<WebResponse<BarangResponse>> deleteBarang(@PathVariable Long id) {
-        BarangResponse barangResponse = barangServiceImpl.delete(id);
+        BarangResponse barangResponse = barangService.delete(id);
 
         if (barangResponse != null) {
             WebResponse<BarangResponse> response = WebResponse.<BarangResponse>builder()

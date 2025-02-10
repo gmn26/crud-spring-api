@@ -2,9 +2,9 @@ package com.gmn26.crud.spring.api.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gmn26.crud.spring.api.dto.barang.BarangResponse;
-import com.gmn26.crud.spring.api.dto.barang.CreateBarangDto;
-import com.gmn26.crud.spring.api.dto.WebResponse;
+import com.gmn26.crud.spring.api.bean.barang.BarangResponse;
+import com.gmn26.crud.spring.api.bean.barang.CreateBarangDto;
+import com.gmn26.crud.spring.api.bean.WebResponse;
 import com.gmn26.crud.spring.api.entity.BarangEntity;
 import com.gmn26.crud.spring.api.repository.BarangRepository;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,7 +1,7 @@
 package com.gmn26.crud.spring.api.service;
 
 import com.gmn26.crud.spring.api.JwtProvider.JwtTokenProvider;
-import com.gmn26.crud.spring.api.dto.auth.LoginRequestDto;
+import com.gmn26.crud.spring.api.bean.auth.LoginRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;

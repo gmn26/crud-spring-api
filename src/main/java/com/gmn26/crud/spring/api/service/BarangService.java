@@ -1,24 +1,31 @@
-package com.gmn26.crud.spring.api.service.barang;
+package com.gmn26.crud.spring.api.service;
 
-import com.gmn26.crud.spring.api.dto.barang.BarangResponse;
-import com.gmn26.crud.spring.api.dto.barang.CreateBarangDto;
+import com.gmn26.crud.spring.api.bean.barang.BarangResponse;
+import com.gmn26.crud.spring.api.bean.barang.CreateBarangDto;
 import com.gmn26.crud.spring.api.entity.BarangEntity;
+import com.gmn26.crud.spring.api.entity.QBarangEntity;
 import com.gmn26.crud.spring.api.entity.UserEntity;
 import com.gmn26.crud.spring.api.repository.BarangRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.querydsl.jpa.impl.JPAQuery;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
-public class BarangServiceImpl implements BarangService {
+@RequiredArgsConstructor
+public class BarangService {
 
-    @Autowired
-    private BarangRepository barangRepository;
+    private final BarangRepository barangRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private BarangResponse toBarangResponse(BarangEntity barangEntity) {
         return BarangResponse.builder()
@@ -32,13 +39,37 @@ public class BarangServiceImpl implements BarangService {
                 .build();
     }
 
-    public List<BarangResponse> listAll() {
-        List<BarangEntity> barangEntities = barangRepository.findAll();
+    public List<BarangResponse> findAllBarang(
+            String kodeBarang
+    ) {
+        QBarangEntity qBarang = QBarangEntity.barangEntity;
+
+        JPAQuery<BarangEntity> query = new JPAQuery<>(entityManager);
+
+        query.from(qBarang);
+
+        if(kodeBarang != null) {
+            query.where(qBarang.kodeBarang.contains(kodeBarang));
+        }
+
+        List<BarangEntity> barangEntities = query.fetch();
+
         return barangEntities.stream().map(this::toBarangResponse).collect(Collectors.toList());
     }
 
-    public List<BarangResponse> listAuthedBarang(UserEntity user) {
-        List<BarangEntity> barangEntities = barangRepository.findByIdUser(user.getId());
+    public List<BarangResponse> fetchAuthedBarang(UserEntity user) {
+        QBarangEntity qBarang = QBarangEntity.barangEntity;
+
+        JPAQuery<BarangEntity> query = new JPAQuery<>(entityManager);
+
+        UUID id = user.getId();
+
+        query.from(qBarang);
+
+        query.where(qBarang.idUser.eq(id));
+
+        List<BarangEntity> barangEntities = query.fetch();
+
         return barangEntities.stream().map(this::toBarangResponse).collect(Collectors.toList());
     }
 
@@ -48,8 +79,6 @@ public class BarangServiceImpl implements BarangService {
         if (checkDuplicate) {
             return null;
         }
-
-        log.info("Id User Yang login: {}", user.getId());
 
         BarangEntity barangEntity = new BarangEntity();
         barangEntity.setIdUser(user.getId());
@@ -64,16 +93,14 @@ public class BarangServiceImpl implements BarangService {
         return toBarangResponse(barangEntity);
     }
 
-    public BarangResponse update(Long id, UserEntity user ,CreateBarangDto request) {
+    public BarangResponse update(Long id, UserEntity user, CreateBarangDto request) {
         boolean checkExist = barangRepository.existsById(id);
 
-        if(checkExist) {
+        if (checkExist) {
             BarangEntity barangEntity = barangRepository.findById(id).orElseThrow();
 
-            if(barangEntity.getIdUser().equals(user.getId())) {
-                if(barangEntity.getKodeBarang().equals(request.getKodeBarang())) {
-                    barangEntity.setKodeBarang(request.getKodeBarang());
-                }
+            if (barangEntity.getIdUser().equals(user.getId())) {
+                barangEntity.setKodeBarang(request.getKodeBarang());
                 barangEntity.setNamaBarang(request.getNamaBarang());
                 barangEntity.setJumlahStok(request.getJumlahStok());
                 barangEntity.setHargaSatuan(request.getHargaSatuan());
@@ -83,7 +110,6 @@ public class BarangServiceImpl implements BarangService {
             } else {
                 return null;
             }
-
         } else {
             return null;
         }
@@ -94,13 +120,9 @@ public class BarangServiceImpl implements BarangService {
 
         if (checkExist) {
             BarangEntity barangEntity = new BarangEntity();
-            barangRepository.deleteById(id);
-            return toBarangResponse(barangEntity);
+             barangRepository.delete(barangEntity);
+             return toBarangResponse(barangEntity);
         }
-        return null;
-    }
-
-    public List<BarangEntity> findBarangByJumlahStok(Integer jumlahStok) {
         return null;
     }
 }

@@ -1,10 +1,10 @@
 package com.gmn26.crud.spring.api.controller;
 
-import com.gmn26.crud.spring.api.dto.auth.LoginRequestDto;
-import com.gmn26.crud.spring.api.dto.auth.LoginResponse;
-import com.gmn26.crud.spring.api.dto.WebResponse;
-import com.gmn26.crud.spring.api.dto.auth.RegisterRequestDto;
-import com.gmn26.crud.spring.api.dto.auth.RegisterResponse;
+import com.gmn26.crud.spring.api.bean.auth.LoginRequestDto;
+import com.gmn26.crud.spring.api.bean.auth.LoginResponse;
+import com.gmn26.crud.spring.api.bean.WebResponse;
+import com.gmn26.crud.spring.api.bean.auth.RegisterRequestDto;
+import com.gmn26.crud.spring.api.bean.auth.RegisterResponse;
 import com.gmn26.crud.spring.api.entity.UserEntity;
 import com.gmn26.crud.spring.api.repository.UserRepository;
 import com.gmn26.crud.spring.api.service.UserServiceImpl;
