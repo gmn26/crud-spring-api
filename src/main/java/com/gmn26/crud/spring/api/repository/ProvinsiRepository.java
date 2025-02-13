@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 public interface ProvinsiRepository extends JpaRepository<ProvinsiEntity, Long>, QuerydslPredicateExecutor<ProvinsiEntity> {
-
+    boolean existsByNamaProvinsi(String namaProvinsi);
 }

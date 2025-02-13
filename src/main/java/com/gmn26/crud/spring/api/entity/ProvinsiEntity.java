@@ -2,16 +2,19 @@ package com.gmn26.crud.spring.api.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
-@Data
+@Setter
+@Getter
 @Table(name = "provinsi")
 public class ProvinsiEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String namaProvinsi;

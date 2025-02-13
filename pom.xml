@@ -79,6 +79,14 @@
             <classifier>jakarta</classifier>
         </dependency>
 
+        <!--CSV Handler-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.13.0</version>
+        </dependency>
+
+
         <!--JWT-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
