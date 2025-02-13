@@ -119,7 +119,7 @@ public class BarangService {
         boolean checkExist = barangRepository.existsById(id);
 
         if (checkExist) {
-            BarangEntity barangEntity = new BarangEntity();
+            BarangEntity barangEntity = barangRepository.findById(id).orElseThrow();
              barangRepository.delete(barangEntity);
              return toBarangResponse(barangEntity);
         }
