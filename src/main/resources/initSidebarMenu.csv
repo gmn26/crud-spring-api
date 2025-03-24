@@ -1,0 +1,5 @@
+"1;Dashboard;/dashboard;['Admin','User']"
+2;User Management;/dashboard/user-management;['Admin']
+3;User Transaction;/dashboard/user-transaction;['Admin']
+4;Transaction;/dashboard/transaction;['User']
+5;Report;/dashboard/report;['Admin']

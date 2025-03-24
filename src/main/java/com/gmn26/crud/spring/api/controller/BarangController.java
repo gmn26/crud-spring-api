@@ -25,9 +25,7 @@ public class BarangController {
     private final BarangService barangService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public WebResponse<List<BarangResponse>> fetchAllBarang(
-            @RequestParam(required = false) String kodeBarang
-    ) {
+    public WebResponse<List<BarangResponse>> fetchAllBarang(@RequestParam(required = false) String kodeBarang) {
         List<BarangResponse> barangResponse = barangService.findAllBarang(kodeBarang);
 
         return WebResponse.<List<BarangResponse>>builder()

@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "BarangEntity API Documentation",
+                title = "Spring API Documentation",
                 version = "1.0",
                 description = "API Documentation"
         )

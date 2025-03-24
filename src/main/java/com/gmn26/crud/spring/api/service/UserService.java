@@ -1,7 +1,8 @@
 package com.gmn26.crud.spring.api.service;
 
 import com.gmn26.crud.spring.api.bean.auth.LoginRequestDto;
+import com.gmn26.crud.spring.api.bean.auth.LoginResponse;
 
 public interface UserService {
-    public String login(LoginRequestDto loginRequestDto);
+    public LoginResponse login(LoginRequestDto loginRequestDto);
 }

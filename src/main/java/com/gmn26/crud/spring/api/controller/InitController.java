@@ -3,6 +3,7 @@ package com.gmn26.crud.spring.api.controller;
 
 import com.gmn26.crud.spring.api.bean.WebResponse;
 import com.gmn26.crud.spring.api.service.ImportCsvService;
+import com.gmn26.crud.spring.api.service.InitSidebarMenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,19 @@ import javax.print.attribute.standard.Media;
 public class InitController {
 
     private final ImportCsvService importCsvService;
+
+    private final InitSidebarMenuService initSidebarMenuService;
+
+    @PostMapping(path = "/sidebar-menu", produces = MediaType.APPLICATION_JSON_VALUE)
+    public WebResponse initSidebarMenu() {
+        initSidebarMenuService.initSidebarMenu();
+
+        return WebResponse.builder()
+                .success(true)
+                .message("Success init sidebar menu")
+                .data(null)
+                .build();
+    }
 
     @PostMapping(path = "/provinsi",produces = MediaType.APPLICATION_JSON_VALUE)
     public WebResponse initProvinsi() {
